@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XY Note 다운로드</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .description {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-left: 5px solid #3498db;
+            margin-bottom: 25px;
+            border-radius: 4px;
+            min-height: 100px;
+        }
+        .download-btn {
+            display: inline-block;
+            background-color: #2ecc71;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .download-btn:hover {
+            background-color: #27ae60;
+        }
+        .download-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .file-list {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>XY Note 다운로드</h1>
+    
+    <!-- 이 부분에 설명을 적으세요 -->
+    <div class="description">
+        <h3>📌 프로그램 설명</h3>
+        <p>이것은 xython 패키지를 쉽게 사용가능하도록 gui형식의 프로그램으로 만든것입니다. 특정 폴더안에 압축을 풀면, xy_note라는 형태로 폴더가 만드렁지며
+        그안의 xy_note_cs11.exe을 클릭하시면 코드가 실행됩니다</p>
+        <p><strong>주의사항:</strong> 다운로드가 완료된 후, <code>xy_note_v15_pu.7z.001</code> 파일을 압축 해제 프로그램(반디집, 7-Zip 등)으로 열어 압축을 풀어주세요.</p>
+    </div>
+
+    <button id="downloadBtn" class="download-btn" onclick="downloadAll()">모든 파일 다운로드</button>
+    
+    <div class="file-list">
+        <p>* 브라우저 보안 정책에 따라 파일이 차례로 다운로드됩니다. 팝업 차단이 해제되어 있는지 확인해 주세요.</p>
+    </div>
+</div>
+
+<script>
+    // 다운로드할 파일 목록 (GitHub에 업로드한 정확한 파일명 입력)
+    const filesToDownload = [
+        "xy_note_v15_pu.7z.001",
+        "xy_note_v15_pu.7z.002",
+        "xy_note_v15_pu.7z.003",
+        "xy_note_v15_pu.7z.004",
+        "xy_note_v15_pu.7z.005",
+        "xy_note_v15_pu.exe"
+    ];
+
+    function downloadAll() {
+        const btn = document.getElementById('downloadBtn');
+        btn.disabled = true;
+        btn.innerText = "다운로드 중...";
+
+        // 파일 간의 다운로드 간격 (단위: 밀리초). 브라우저가 여러 파일을 동시에 차단하는 것을 방지합니다.
+        const delay = 1000; 
+
+        filesToDownload.forEach((filename, index) => {
+            setTimeout(() => {
+                // a 태그를 생성하여 다운로드 트리거
+                const link = document.createElement('a');
+                // 현재 경로를 기준으로 파일 링크 생성 (index.html과 같은 폴더에 있다고 가정)
+                link.href = encodeURIComponent(filename);
+                link.download = filename;
+                
+                // DOM에 추가 후 클릭하여 다운로드 실행
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // 마지막 파일 다운로드가 끝나면 버튼 상태 복구
+                if (index === filesToDownload.length - 1) {
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.innerText = "모든 파일 다운로드";
+                    }, 1000);
+                }
+            }, index * delay);
+        });
+    }
+</script>
+
+</body>
+</html>
